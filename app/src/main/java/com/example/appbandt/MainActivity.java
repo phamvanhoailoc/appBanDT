@@ -6,7 +6,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         anhxa();
         actionbar();
         actionViewFlipper();
+
     }
     private void actionViewFlipper() {
         ArrayList<String> mangquangcao = new ArrayList<>();
