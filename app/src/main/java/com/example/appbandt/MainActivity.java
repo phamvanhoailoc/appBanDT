@@ -4,11 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -16,18 +15,39 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ViewFlipper;
 
+import com.example.appbandt.adapter.MonanAdapter;
+import com.example.appbandt.adapter.NhahangAdapter;
+import com.example.appbandt.model.Monan;
+import com.example.appbandt.model.Nhahang;
+import com.example.appbandt.retofit2.APIUtils;
+import com.example.appbandt.retofit2.DataClient;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     ViewFlipper viewFlipper;
-    RecyclerView recyclerViewmanhinhchinh;
+    ListView lvtrangchinh;
     NavigationView navigationView;
     ListView lvmanhinhchinh;
     DrawerLayout drawerLayout;
+    String tenmonan ;
+    String hinhmonan ;
+    String tennhahang;
+    String diachi;
+    String hinhnhahang;
+    Float gia;
+    Time giomocua,giodongcua;
+    MonanAdapter monanAdapter ;
+    NhahangAdapter nhahangAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +55,50 @@ public class MainActivity extends AppCompatActivity {
         anhxa();
         actionbar();
         actionViewFlipper();
+        getdulieumonan();
+        getdulieunhahang();
 
     }
+
+    private void getdulieunhahang() {
+        DataClient dataClient = APIUtils.getData();
+        Call<List<Nhahang>> callback = dataClient.Dsnhahang(tennhahang,diachi,gia,giomocua,giodongcua,hinhnhahang);
+        callback.enqueue(new Callback<List<Nhahang>>() {
+            @Override
+            public void onResponse(Call<List<Nhahang>> call, Response<List<Nhahang>> response) {
+                ArrayList<Nhahang> nhahangs = (ArrayList<Nhahang>) response.body();
+                nhahangAdapter = new NhahangAdapter(getApplicationContext(),nhahangs);
+                lvtrangchinh.setAdapter(nhahangAdapter);
+                nhahangAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<Nhahang>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void getdulieumonan() {
+        DataClient dataClient = APIUtils.getData();
+        Call<List<Monan>> callback = dataClient.Dsmonan(tenmonan,hinhmonan);
+        callback.enqueue(new Callback<List<Monan>>() {
+            @Override
+            public void onResponse(Call<List<Monan>> call, Response<List<Monan>> response) {
+                ArrayList<Monan> monans = (ArrayList<Monan>) response.body();
+                monanAdapter = new MonanAdapter(monans,getApplicationContext());
+                lvmanhinhchinh.setAdapter(monanAdapter);
+                monanAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Monan>> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void actionViewFlipper() {
         ArrayList<String> mangquangcao = new ArrayList<>();
         mangquangcao.add("https://pasgo.vn/Upload/anh-slide-show/bep-oc-sai-gon---du-mon-ngon-tu-oc-118484781578.jpg");
@@ -71,8 +133,9 @@ public class MainActivity extends AppCompatActivity {
     private void anhxa(){
         toolbar = (Toolbar) findViewById(R.id.tbmhc);
         viewFlipper = (ViewFlipper) findViewById(R.id.vlp);
-        recyclerViewmanhinhchinh = (RecyclerView) findViewById(R.id.recyclerview);
+        lvtrangchinh = (ListView) findViewById(R.id.lvtrangchinh) ;
         lvmanhinhchinh = (ListView) findViewById(R.id.lvmanhinhchinh);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawlayout);
+
     }
 }

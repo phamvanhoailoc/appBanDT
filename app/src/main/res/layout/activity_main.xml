@@ -18,7 +18,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:title="Trang Chinh"
-                android:background="#4C61D6">
+                android:background="#BFACC3">
             </androidx.appcompat.widget.Toolbar>
             <ViewFlipper
                 android:layout_width="match_parent"
@@ -26,23 +26,22 @@
                 android:id="@+id/vlp">
             </ViewFlipper>
             <LinearLayout
-                android:background="#667CF6"
+                android:background="#BFACC3"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="#E1554A"
+                    android:textColor="#000"
                     android:layout_margin="5dp"
                     android:text="san pham moi nhat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview"
+                <ListView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lvtrangchinh"/>
             </LinearLayout>
         </LinearLayout>
         <com.google.android.material.navigation.NavigationView
